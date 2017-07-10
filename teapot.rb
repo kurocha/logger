@@ -5,21 +5,32 @@
 
 teapot_version "1.3"
 
-define_project "Logger" do |project|
-	project.add_author "Samuel Williams"
-	project.license = "MIT License"
+# Project Metadata
 
+define_project "logger" do |project|
+	project.title = 'Logger'
+	project.summary = 'A brief one line summary of the project.'
+	
+	project.license = "MIT License"
+	
+	project.add_author 'Samuel Williams', email: 'samuel.williams@oriontransfer.co.nz'
+	
 	project.version = "1.0.0"
 end
 
-define_target "logger" do |target|
-	target.build do |environment|
+# Build Targets
+
+define_target 'logger-library' do |target|
+	target.build do
 		source_root = target.package.path + 'source'
 		
 		copy headers: source_root.glob('Logger/**/*.hpp')
 		
 		build static_library: "Logger", source_files: source_root.glob('Logger/**/*.cpp')
 	end
+	
+	target.depends 'Build/Files'
+	target.depends 'Build/Clang'
 	
 	target.depends :platform
 	target.depends "Language/C++11", private: true
@@ -30,15 +41,17 @@ define_target "logger" do |target|
 	target.depends "Build/Clang"
 	
 	target.provides "Library/Logger" do
-		append linkflags ->{install_prefix + "lib/libLogger.a"}
+		append linkflags [
+			->{install_prefix + 'lib/libLogger.a'},
+		]
 	end
 end
 
 define_target "logger-tests" do |target|
-	target.build do |environment|
+	target.build do |*arguments|
 		test_root = target.package.path + 'test'
 		
-		run tests: "Logger", source_files: test_root.glob('Logger/**/*.cpp')
+		run tests: 'Logger', source_files: test_root.glob('Logger/**/*.cpp'), arguments: arguments
 	end
 	
 	target.depends "Language/C++11", private: true
@@ -49,14 +62,23 @@ define_target "logger-tests" do |target|
 	target.provides "Test/Logger"
 end
 
-define_configuration "test" do |configuration|
+# Configurations
+
+define_configuration "logger" do |configuration|
 	configuration[:source] = "http://github.com/kurocha/"
 	
+	configuration.require 'generate-project'
+	configuration.require 'generate-travis'
+	
+	configuration.require "time"
+	
+	# Provides all the build related infrastructure:
 	configuration.require "platforms"
 	configuration.require "build-files"
 	
+	# Provides unit testing infrastructure and generators:
 	configuration.require "unit-test"
-	configuration.require "time"
 	
-	configuration.require "language-cpp-class"
+	# Provides some useful C++ generators:
+	configuration.require "generate-cpp-class"
 end
