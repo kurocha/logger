@@ -75,8 +75,8 @@ namespace Logger
 		}
 		
 		message << "[T+" << std::fixed << std::left
-			<< std::setfill(' ') << std::setw(5) << std::setprecision(3) << _timer.time() << " "
-			<< std::setw(6) << thread_name() << " "
+			<< std::setfill(' ') << std::setw(5) << std::setprecision(3) << _timer.time().as_seconds() << " "
+			<< std::setw(12) << thread_name() << " "
 			<< std::setw(5) << std::right << level_name(level) << "] ";
 		
 		// Restore defaults.
