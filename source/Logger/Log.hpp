@@ -85,5 +85,11 @@ namespace Logger
 		{
 			output << head << ' ' << tail;
 		}
+		
+		template <typename HeadT>
+		static void write(Message & output, HeadT head)
+		{
+			output << head;
+		}
 	};
 }
