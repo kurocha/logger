@@ -64,13 +64,12 @@ end
 
 # Configurations
 
-define_configuration "logger" do |configuration|
+define_configuration "development" do |configuration|
 	configuration[:source] = "http://github.com/kurocha/"
+	configuration.import "logger"
 	
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
-	
-	configuration.require "time"
 	
 	# Provides all the build related infrastructure:
 	configuration.require "platforms"
@@ -81,4 +80,10 @@ define_configuration "logger" do |configuration|
 	
 	# Provides some useful C++ generators:
 	configuration.require "generate-cpp-class"
+end
+
+define_configuration "logger" do |configuration|
+	configuration.public!
+	
+	configuration.require "time"
 end
