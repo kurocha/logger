@@ -54,7 +54,7 @@ define_target "logger-tests" do |target|
 		run tests: 'Logger', source_files: test_root.glob('Logger/**/*.cpp'), arguments: arguments
 	end
 	
-	target.depends "Language/C++11", private: true
+	target.depends "Language/C++14", private: true
 	
 	target.depends "Library/UnitTest"
 	target.depends "Library/Logger"
