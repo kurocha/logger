@@ -21,7 +21,7 @@ end
 # Build Targets
 
 define_target 'logger-library' do |target|
-	target.depends "Language/C++11"
+	target.depends "Language/C++14"
 	
 	target.depends "Library/Time", public: true
 	
