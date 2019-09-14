@@ -36,15 +36,15 @@ define_target 'logger-library' do |target|
 end
 
 define_target "logger-tests" do |target|
+	target.depends "Library/UnitTest"
 	target.depends "Language/C++14"
 	
-	target.depends "Library/UnitTest"
 	target.depends "Library/Logger"
 	
 	target.provides "Test/Logger" do |*arguments|
 		test_root = target.package.path + 'test'
 		
-		run tests: 'Logger', source_files: test_root.glob('Logger/**/*.cpp'), arguments: arguments
+		run source_files: test_root.glob('Logger/**/*.cpp'), arguments: arguments
 	end
 end
 
